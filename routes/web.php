@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\pacienteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,4 +20,4 @@ use App\Http\Controllers\Controller;
 });
  */
 
-Route::get("/", [Controller::class, 'index'])->name('index');
+Route::get("/", [pacienteController::class, 'index'])->name('index');
