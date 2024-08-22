@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use App\Models\DynamoDB\paciente;
 use Illuminate\Routing\Controller as BaseController;
 
 class Controller extends BaseController
@@ -13,7 +14,7 @@ class Controller extends BaseController
 
     public function index(){
 
-        return "Hola Mundo";
+        return paciente::get();
         
     }
 }
