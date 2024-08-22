@@ -18,8 +18,8 @@ class pacienteController extends Controller
                     $resultado=paciente::where('estado_paciente',1)->get();
                 }
  */
-                $permisos = Controller::permisos('paciente');
-                return view ("paciente.index", ["resultado"=>$resultado,'permisos'=>$permisos]);
+                //$permisos = Controller::permisos('paciente');
+                return view ("paciente.index", ["resultado"=>$resultado]);
 /* 
             }
             
