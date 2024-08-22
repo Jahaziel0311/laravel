@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\DynamoDB\paciente;
 
 class pacienteController extends Controller
 {
@@ -19,7 +20,13 @@ class pacienteController extends Controller
                 }
  */
                 //$permisos = Controller::permisos('paciente');
-                return view ("paciente.index", ["resultado"=>$resultado]);
+                $permisos['create']=1;
+                $permisos['update']=1;
+                $permisos['delete']=1;       
+                $permisos['insert']=1;
+                $permisos['createOrder']=1;
+                $resultado = paciente::get();
+                return view ("paciente.index", ["resultado"=>$resultado,"permisos"=>$permisos]);
 /* 
             }
             
