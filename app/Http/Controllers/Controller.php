@@ -33,8 +33,7 @@ class Controller extends BaseController
             return redirect(route('login.index'));
         }
 
-        return view('layout.app');
-        
+               
 
         if (Auth::user()->rol->tipo_rol>0) {
             $ordenes_totales = orden_laboratorio::where('estado_orden_laboratorio','<>','Eliminado')
@@ -69,7 +68,7 @@ class Controller extends BaseController
 
                 if($ordenes_totales==0){
 
-                    return view("pages.dashboard",["ordenes_totales"=>0,
+                    return view("dashboard",["ordenes_totales"=>0,
                                             "ordenes_terminadas"=>0,
                                             "porcentaje_terminado"=>100,
                                             "ordenes_enproceso"=>0,
@@ -91,7 +90,7 @@ class Controller extends BaseController
                                         ]); 
                     
                     if ($ordenes_totales_mes == 0) {
-                        return view("pages.dashboard",["ordenes_totales"=>0,
+                        return view("dashboard",["ordenes_totales"=>0,
                         "ordenes_terminadas"=>0,
                         "porcentaje_terminado"=>100,
                         "ordenes_enproceso"=>0,
@@ -120,7 +119,7 @@ class Controller extends BaseController
                 
                 
                 if ($ordenes_totales_mes == 0) {
-                    return view("pages.dashboard",["ordenes_totales"=>0,
+                    return view("dashboard",["ordenes_totales"=>0,
                     "ordenes_terminadas"=>0,
                     "porcentaje_terminado"=>100,
                     "ordenes_enproceso"=>0,
@@ -153,7 +152,7 @@ class Controller extends BaseController
                 $porcentaje_pendiente = ($ordenes_pendientes/$ordenes_totales)*100;
 
                 
-                return view("pages.dashboard",["ordenes_totales"=>$ordenes_totales,
+                return view("dashboard",["ordenes_totales"=>$ordenes_totales,
                                                 "ordenes_terminadas"=>$ordenes_terminadas,
                                                 "porcentaje_terminado"=>$porcentaje_terminado,
                                                 "ordenes_enproceso"=>$ordenes_enproceso,
