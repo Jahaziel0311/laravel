@@ -17,6 +17,19 @@ class pantalla extends Model
     public function rol_pantallas(){
         return $this->hasMany('App\Models\rol_pantalla');
     }
+
+    public function sub_menu()
+    {
+        $rol_id = Auth()->user()->rol->id;
+        $pantallas_rol = rol_pantalla::where('rol_id',$rol_id)->get();
+        $lista = array();
+
+        foreach($pantallas_rol as $pantalla_rol){
+            array_push($lista,$pantalla_rol->pantalla->id);
+        }
+
+        return pantalla::where('padre',$this->id)->whereIn('id',$lista)->get();
+    }
     
 
 

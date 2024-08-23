@@ -1,59 +1,119 @@
-@extends('layouts.app')
+<!doctype html>
+<html lang="en">
 
-@section('content')
-    <div class="container position-sticky z-index-sticky top-0">
+<head>
+
+    <meta charset="utf-8" />
+    <title>Login | {{env('APP_NAME')}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="Themesbrand" name="author" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="{{asset('assets/images/favicon.ico')}}">
+
+    <!-- Bootstrap Css -->
+    <link href="{{asset('assets/css/bootstrap.min.css')}}" id="bootstrap-style" rel="stylesheet" type="text/css" />
+    <!-- Icons Css -->
+    <link href="{{asset('assets/css/icons.min.css')}}" rel="stylesheet" type="text/css" />
+    <!-- App Css-->
+    <link href="{{asset('assets/css/app.min.css')}}" id="app-style" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body class="auth-body-bg">
+
+    <div class="container-fluid">
+        <!-- Log In page -->
         <div class="row">
-            <div class="col-12">
-                @include('layouts.navbars.guest.navbar')
-            </div>
-        </div>
-    </div>
-    <main class="main-content  mt-0">
-        <section>
-            <div class="page-header min-vh-100">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0 mx-auto">
-                            <div class="card card-plain">
-                                <div class="card-header pb-0 text-start">
-                                    <h4 class="font-weight-bolder">Ingresar</h4>
-                                    <p class="mb-0">Introduzca su Usuario y Contraseña</p>
-                                </div>
-                                <div class="card-body">
-                                    <form action="" method="POST" role="form" action="{{route('login.login')}}" autocomplete="off">
-                                        @csrf
-                                        <div class="flex flex-col mb-3">
-                                            <input type="text" name="usuario" class="form-control form-control-lg" value="{{ old('usuario') ?? 'Introduzca su Usuario' }}" aria-label="Usuario" required>
+            <div class="col-lg-3 pe-0">
+                <div class="card mb-0 shadow-none">
+                    <div class="card-body">
+                        
+                       
+                        <div class="px-2 mt-2" style="padding-top: 50%;">
+                            <h3 class="text-center m-0">
+                                <img src="{{asset('images/fondo.png')}}"
+                                         height="60" alt="logo" class="my-3">
+                             </h3>
+                           
+                            <form action="" method="POST" role="form" action="{{route('login.login')}}">
+                                @csrf
+                                <div class="mb-3">
+                                    <label class="form-label" for="username">Usuario</label>
+                                    <div class="input-group">
+
+                                        <span class="input-group-text" id="basic-addon1"><i
+                                                class="far fa-user"></i></span>
+
+                                        <input type="text" class="form-control" name="usuario" id="username" value="{{ old('usuario')}}"
+                                            placeholder="Ingrese el Usuario" required>
                                             @error('usuario') <p class="text-danger text-xs pt-1"> {{$message}} </p>@enderror
-                                        </div>
-                                        <div class="flex flex-col mb-3">
-                                            <input type="password" name="password" class="form-control form-control-lg" aria-label="Password" required >
-                                            @error('password') <p class="text-danger text-xs pt-1"> {{$message}} </p>@enderror
-                                        </div>
-                                       
-                                        <div class="text-center">
-                                            <button type="submit" class="btn btn-lg btn-primary btn-lg w-100 mt-4 mb-0">Ingresar</button>
-                                        </div>
-                                    </form>
+                                    </div>
                                 </div>
-                              
-                            </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label" for="userpassword">Password</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon2"><i
+                                                class="fa fa-key"></i></span>
+                                        <input type="password" class="form-control" id="userpassword"
+                                            placeholder="Ingrese la Contraseña" name="password">
+                                            @error('password') <p class="text-danger text-xs pt-1"> {{$message}} </p>@enderror
+                                    </div>
+                                </div>
+
+                               
+                               
+
+                                <div class="mb-3 mb-0 row">
+                                    <div class="col-12 mt-2">
+                                        <button class="btn btn-primary w-100 waves-effect waves-light" type="submit">
+                                            Ingresar
+                                            <i class="fas fa-sign-in-alt ms-1"></i></button>
+                                    </div>
+                                    <!-- end col -->
+                                </div>
+                                <!-- end row -->
+                            </form>
+                            <!-- end form -->
                         </div>
-                        <div
-                            class="col-6 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 end-0 text-center justify-content-center flex-column">
-                            <div class="position-relative bg-gradient-primary h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center overflow-hidden"
-                                style="background-image: url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signin-ill.jpg');
-              background-size: cover;">
-                                <span class="mask bg-gradient-primary opacity-6"></span>
-                                <h4 class="mt-5 text-white font-weight-bolder position-relative">"Attention is the new
-                                    currency"</h4>
-                                <p class="text-white position-relative">The more effortless the writing looks, the more
-                                    effort the writer actually put into the process.</p>
-                            </div>
+                      
+                        <div class="mt-4 text-center">
+                            <p class="mb-0">©
+                                <script>document.write(new Date().getFullYear())</script> creado por StyleSolution 
+                                <a href="https://stylesolutionpty.com/">StyleSolutionPty.com</a>
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-    </main>
-@endsection
+            <!-- end col -->
+
+            <div class="col-lg-9 p-0 vh-100  d-flex justify-content-center">
+                <div class="accountbg d-flex align-items-center">
+                    <div class="account-title text-center text-white">
+                        <h4 class="mt-3 text-white"> </h4>
+                        <h1 class="text-white">Bienvenido a <span class="text-info">VALMAR</span></h1>                        
+                        <div class="border w-25 mx-auto border-warning"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- end col -->
+        </div>
+        <!-- End Log In page -->
+    </div>
+
+
+
+    <!-- JAVASCRIPT -->
+    <script src="{{asset('assets/libs/jquery/jquery.min.js')}}"></script>
+    <script src="{{asset('assets/libs/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{asset('assets/libs/metismenu/metisMenu.min.js')}}"></script>
+    <script src="{{asset('assets/libs/simplebar/simplebar.min.js')}}"></script>
+    <script src="{{asset('assets/libs/node-waves/waves.min.js')}}"></script>
+
+    <script src="{{asset('assets/js/app.js')}}"></script>
+
+</body>
+
+</html>

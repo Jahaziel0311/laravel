@@ -3,40 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\DynamoDB\paciente;
+use App\Models\paciente;
+use App\Models\pantalla;
 
 class pacienteController extends Controller
 {
     public function index(){
-/*         if (Session::has('usuario_rol_id')) {
-            $pantallas_menu = Controller::urlsPantallasXUsuario();
-            
-            if (in_array('/paciente',$pantallas_menu)){//solo modificar la ruta buscar las rutas en web.php o el la tabla pantallas
-                //esto ya estaba
-                if(Session::get('usuario_rol_id')==1){
-                    $resultado = paciente::get(); 
-                }else{
-                    $resultado=paciente::where('estado_paciente',1)->get();
-                }
- */
-                //$permisos = Controller::permisos('paciente');
-                $permisos['create']=1;
-                $permisos['update']=1;
-                $permisos['delete']=1;       
-                $permisos['insert']=1;
-                $permisos['createOrder']=1;
-                $resultado = paciente::get();
-                return view ("paciente.index", ["resultado"=>$resultado,"permisos"=>$permisos]);
-/* 
-            }
-            
-              
-            return redirect(route('index'));
-            
-        }else{
-            return redirect(route('login.index'));
-        }
-        */
+
+        $pantalla = pantalla::where('nombre_pantalla','Pacientes')->first();       
+                
+        return view ("paciente.index", ["pantalla"=>$pantalla]);
+
     } 
 
     public function busqueda(){

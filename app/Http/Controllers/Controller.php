@@ -25,12 +25,15 @@ class Controller extends BaseController
 
     public function index(){
 
+        
         if (!Auth::user()) {
 
             $current = url()->current();
             Session::put('url', $current);    
             return redirect(route('login.index'));
         }
+
+        return view('layout.app');
         
 
         if (Auth::user()->rol->tipo_rol>0) {
