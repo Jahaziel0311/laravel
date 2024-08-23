@@ -17,6 +17,8 @@
     <!-- Font Awesome Icons -->
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
     <link href="assets/css/nucleo-svg.css" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/font-awesome/css/font-awesome.min.css">
+
     <!-- CSS Files -->
     <link id="pagestyle" href="assets/css/argon-dashboard.css" rel="stylesheet" />
 </head>
@@ -28,8 +30,12 @@
     @endguest
 
     @auth
-        @if (in_array(request()->route()->getName(), ['sign-in-static', 'sign-up-static', 'login', 'register', 'recover-password', 'rtl', 'virtual-reality']))
-            @yield('content')
+        @if (true)
+            @include('layouts.navbars.auth.sidenav')
+                <main class="main-content border-radius-lg">
+                    @yield('content')
+                </main>
+            @include('components.fixed-plugin')
         @else
             @if (!in_array(request()->route()->getName(), ['profile', 'profile-static']))
                 <div class="min-height-300 bg-primary position-absolute w-100"></div>

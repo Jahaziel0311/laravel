@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
-use App\Models\usuario;
+use App\Models\User;
 use App\Models\rol_pantalla;
 use Session;
 
@@ -18,32 +18,44 @@ class loginController extends Controller
     }
 
     Public function login(Request $request) {
+
+        $credentials = $request->validate([
+            'usuario' => ['required'],
+            'password' => ['required'],
+        ]);
+
         $nombre=$request->usuario;
-        $contraseña=$request->password;   
+        $contraseña=$request->password;        
         
+        $existe=User::where('nombre_usuario',$nombre)->count();
         
-        
-        $existe=usuario::where('nombre_usuario',$nombre)->count();
-       
-        
-        if ($existe==0) {
+        if ($existe==1) {
+            $usuario=User::where('nombre_usuario',$nombre)->first(); 
+            
+            if ($usuario['password_usuario']==md5($contraseña)) {
 
-            return redirect()->back()->withErrors(['usuario' => "El usuario es incorrecto."]);
+                
+                Auth::login($usuario);
 
+                if (Session::get('url')) {
+                       
+                    return redirect(Session::get('url'));
+                } else {
+                   
+                    return redirect(route('index'));
+                }
+                
+                
+            }
+            else {
+                
+                return redirect()->back()->withErrors(['password' => "Contraseña incorrecta."])->withInput($request->all());
+            }
         }
-
-        $usuario=usuario::where('nombre_usuario',$nombre)->first(); 
-        if ($usuario['password_usuario']!=md5($contraseña)) {
-
-            return redirect()->back()->withInput($request->only('usuario'))->withErrors(['password' => "Contraseña incorrecta."]);            
-
+        else {
+           
+            return redirect()->back()->withErrors(['user' => "El usuario es incorrecto."])->withInput($request->all());
         }
-
-        Session::put('usuario_log_id', $usuario->id);
-        $usuario = usuario::find(Session::get('usuario_log_id')); 
-        Session::put('usuario_rol_id', $usuario->rol->id);                                                           
-        Session::put('nombre_usuario', $usuario->nombre_usuario);  
-        return redirect(route('index'));
             
     }
 
