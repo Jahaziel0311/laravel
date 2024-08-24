@@ -20,17 +20,43 @@
           <div class="card-body">
 
             <div class="row">
-                <div class="col-md-10">
+                <div class="col-md-9">
                   <h5 class="card-title">Pacientes</h5>
                   <p class="card-title-desc">Este listado muestra todos los pacientes que estan registrados en el sistema.
                   </p>
                 </div>
-                <div class="col-md-2">
-                  <button type="button" class="btn btn-primary waves-effect waves-light"
-                  data-bs-toggle="modal" data-animation="bounce"
-                  data-bs-target=".addNewPacienteModal">Agregar Paciente</button>                  
+                <div class="col-md-3">
+                  <div class="row">
+                    <div class="col-md-8">
+                      <button type="button" class="btn btn-primary waves-effect waves-light"
+                        data-bs-toggle="modal" data-animation="bounce"
+                        data-bs-target=".addNewPacienteModal">
+                        Agregar Paciente
+                      </button>
+                      @include('modals.PacienteModals')  
+                    </div>
+                    <div class="col-md-4">
+                      @if(Route::is('paciente.buscado') )
+                        <div class="p-2">
+                          <a href="{{route('paciente.busqueda')}}" type="button" class="btn btn-secondary waves-effect waves-light btn-icon-split">
+                            <span class="icon text-white-50">
+                              <i class="fas fa-chevron-left"></i>
+                              
+                            </span>
+                            <span class="text">
+                              Atras
+                            </span>
+                          </a>
+                        </div>
+                      @endif  
+
+                    </div>
+                  </div>
+                   
+                               
                 </div>
-                @include('modals.PacienteModals')
+                
+                
             </div>
 
               

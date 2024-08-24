@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\paciente;
@@ -36,81 +37,83 @@ class pacienteController extends Controller
     } 
 
     public function busqueda(){
-        if (Session::has('usuario_rol_id')) {
-            $pantallas_menu = Controller::urlsPantallasXUsuario();
-            
-            if (in_array('/paciente',$pantallas_menu)){//solo modificar la ruta buscar las rutas en web.php o el la tabla pantallas
-                //esto ya estaba
-                
+        if (!Auth::user()) {
 
-                $permisos = Controller::permisos('paciente');
-                return view ("paciente.buscar", ['permisos'=>$permisos]);
-
-            }
-            
-              
-            return redirect(route('index'));
-            
-        }else{
-            return redirect(route('login.index'));
+            $current = url()->current();
+            Session::put('url', $current);    
+            return redirect(route('login'));
         }
+
+        if(Auth::user()->accesoRuta('/paciente')){//solo modificar la ruta buscar las rutas en web.php o el la tabla pantallas
+                //esto ya estaba
+                               
+            return view ("paciente.buscar");
+
+        }
+        
+            
+        return redirect(route('index'));
+        
         
     }
 
     public function busque2(Request $request){
-        if (Session::has('usuario_rol_id')) {
-            $pantallas_menu = Controller::urlsPantallasXUsuario();
-            
-            if (in_array('/paciente',$pantallas_menu)){//solo modificar la ruta buscar las rutas en web.php o el la tabla pantallas
+        if (!Auth::user()) {
+
+            $current = url()->current();
+            Session::put('url', $current);    
+            return redirect(route('login'));
+        }
+
+        if(Auth::user()->accesoRuta('/paciente')){//solo modificar la ruta buscar las rutas en web.php o el la tabla pantallas
                 //esto ya estaba
                
                 
-                return redirect(route('paciente.buscado', ['buscar' => $request->txtBuscar]));                
-                
+            return redirect(route('paciente.buscado', ['buscar' => $request->txtBuscar]));                
+            
 
-            }
-            
-              
-            return redirect(route('index'));
-            
-        }else{
-            return redirect(route('login.index'));
         }
+        
+            
+        return redirect(route('index'));
+            
+       
         
     }
 
     public function buscado($buscar){
-        if (Session::has('usuario_rol_id')) {
-            $pantallas_menu = Controller::urlsPantallasXUsuario();
-            
-            if (in_array('/paciente',$pantallas_menu)){//solo modificar la ruta buscar las rutas en web.php o el la tabla pantallas
-               
-                $keyWord = '%'.$buscar .'%';
-                
+        if (!Auth::user()) {
 
-                
-                return view("paciente.index", [
-                    'resultado' => paciente::latest()
-        
-                                ->where(function ($query) use ($keyWord){
-                                    $query->orWhere('identificacion_paciente', 'LIKE', $keyWord)
-                                    ->orWhere('nombre_paciente', 'LIKE', $keyWord)
-                                    ->orWhere('apellido_paciente', 'LIKE', $keyWord)
-                                    ->orWhere(DB::raw("CONCAT(nombre_paciente,' ',apellido_paciente)"), 'LIKE', str_replace(" ", "%", $keyWord));
-                                
-                                })
-                                
-                                ->get(),
-                    'permisos' => Controller::permisos('paciente')]); 
-
-            }
-            
-              
-            return redirect(route('index'));
-            
-        }else{
-            return redirect(route('login.index'));
+            $current = url()->current();
+            Session::put('url', $current);    
+            return redirect(route('login'));
         }
+
+        if(Auth::user()->accesoRuta('/paciente')){//solo modificar la ruta buscar las rutas en web.php o el la tabla pantallas
+               
+            $keyWord = '%'.$buscar .'%';
+            
+
+            
+            return view("paciente.index", [
+                'resultado' => paciente::latest()
+    
+                            ->where(function ($query) use ($keyWord){
+                                $query->orWhere('identificacion_paciente', 'LIKE', $keyWord)
+                                ->orWhere('nombre_paciente', 'LIKE', $keyWord)
+                                ->orWhere('apellido_paciente', 'LIKE', $keyWord)
+                                ->orWhere(DB::raw("CONCAT(nombre_paciente,' ',apellido_paciente)"), 'LIKE', str_replace(" ", "%", $keyWord));
+                            
+                            })
+                            
+                            ->get(),
+                ]); 
+
+        }
+        
+            
+        return redirect(route('index'));           
+       
         
     }
 
