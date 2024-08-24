@@ -49,5 +49,16 @@ class User extends Authenticatable
     {
         return $this->belongsTo('App\Models\rol');
     }
+
+
+    public function accesoRuta($ruta){
+
+        foreach ($this->rol->pantallas as $pantalla) {
+            if ($pantalla->url_pantalla == $ruta) {
+                return  true;
+            }
+        }
+        return false;
+    }
     
 }

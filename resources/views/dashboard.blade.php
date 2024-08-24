@@ -1,5 +1,9 @@
 @extends('layout.app')
 
+@section('titulo')
+    Dashboard
+@endsection
+
 @section('contenido')
 
     <div class="row">

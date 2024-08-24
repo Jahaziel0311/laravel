@@ -20,6 +20,8 @@
         <!-- App Css-->
         <link href="{{asset('assets/css/app.min.css')}}" id="app-style" rel="stylesheet" type="text/css" />
 
+        @yield('head')
+
     </head>
 
     <body data-topbar="dark">
@@ -96,6 +98,10 @@
         <script src="{{asset('assets/js/pages/dashboard.init.js')}}"></script>
 
         <script src="{{asset('assets/js/app.js')}}"></script>
+
+        @yield('js')
+                <!-- Required datatable js -->
+        
 
     </body>
 

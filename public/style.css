@@ -1,9 +1,9 @@
 .card-body {
-    font-size: small;
+    font-size: large;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 #contenido{
-    font-size: small !important;
+    font-size: large !important;
 
 }
 
@@ -29,7 +29,7 @@ h5{
 
 ::placeholder {
     
-    font-size:small;
+    font-size:large;
   }
 #accordionSidebar {
     transition: all .5s;

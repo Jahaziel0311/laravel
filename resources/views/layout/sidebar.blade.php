@@ -12,7 +12,7 @@
                     @foreach (Auth::user()->rol->menu() as $pantalla_menu)  
                         <li>
                             <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                <i class="mdi mdi-email-variant"></i>
+                                
                                 <span>{{$pantalla_menu->nombre_pantalla}}</span>
                             </a>
                             <ul class="sub-menu" aria-expanded="false">

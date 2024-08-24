@@ -17,6 +17,12 @@ class rol extends Model
         return $this->hasMany('App\Models\usuario');
     }
 
+    public function pantallas()
+    {
+        return $this->belongsToMany('App\Models\pantalla', 'rol_pantalla', 'rol_id', 'pantalla_id');
+        
+    }
+
     public function menu()
     {
         $rol_id = Auth()->user()->rol->id;

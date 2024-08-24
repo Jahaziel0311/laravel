@@ -35,7 +35,7 @@ use App\Http\Controllers\Controller;
  use App\Http\Controllers\mailController;
  
  Route::get('/', [Controller::class, 'index'])->name('index');
- Route::get("/login", [loginController::class, 'index'])->name("login.index");
+ Route::get("/login", [loginController::class, 'index'])->name("login");
  Route::Post("/login", [loginController::class, 'login'])->name("login.login");
  
  Route::get('/menu', [Controller::class, 'pantallasMenu'])->name('menu');
