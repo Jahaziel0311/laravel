@@ -114,29 +114,25 @@ class pacienteController extends Controller
     }
 
     public function ultimos(){
-        if (Session::has('usuario_rol_id')) {
-            $pantallas_menu = Controller::urlsPantallasXUsuario();
-            
-            if (in_array('/paciente',$pantallas_menu)){//solo modificar la ruta buscar las rutas en web.php o el la tabla pantallas
-                //esto ya estaba
+        if (!Auth::user()) {
 
-                if(Session::get('usuario_rol_id')==1){
-                    $resultado = paciente::where('created_at', '>=', Carbon::now()->subDays(30))->orderBy('id','Desc')->get(); 
-                }else{
-                    $resultado=paciente::where('created_at', '>=', Carbon::now()->subDays(30))->orderBy('id','Desc')->where('estado_paciente',1)->get();
-                }
+            $current = url()->current();
+            Session::put('url', $current);    
+            return redirect(route('login'));
+        }
 
-                $permisos = Controller::permisos('paciente');
-                return view ("paciente.index", ["resultado"=>$resultado,'permisos'=>$permisos]);
+        if(Auth::user()->accesoRuta('/paciente')){
 
+                        
+            if (Auth::user()->rol->tipo_rol == 1) {
+                $resultado = paciente::where('created_at', '>=', Carbon::now()->subDays(30))->orderBy('id','Desc')->get(); 
+            } else {
+                $resultado=paciente::where('created_at', '>=', Carbon::now()->subDays(30))->orderBy('id','Desc')->where('estado_paciente',1)->get();
             }
             
-              
-            return redirect(route('index'));
-            
-        }else{
-            return redirect(route('login.index'));
         }
+        return view ("paciente.index", ["resultado"=>$resultado]);
+       
         
     }
 
