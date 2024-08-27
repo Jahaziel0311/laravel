@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use App\Models\User;
+use App\Models\paciente;
 use App\Models\rol_pantalla;
 use Session;
 
@@ -30,7 +31,7 @@ class loginController extends Controller
         $existe=User::where('nombre_usuario',$nombre)->count();
         
         if ($existe==1) {
-            $usuario=User::where('nombre_usuario',$nombre)->first(); 
+            $usuario=User::where('nombre_usuario',$nombre)->where('estado_usuario',1)->first(); 
             
             if ($usuario['password_usuario']==md5($contraseña)) {
 
@@ -54,8 +55,36 @@ class loginController extends Controller
         }
         else {
            
-            return redirect()->back()->withErrors(['user' => "El usuario es incorrecto."])->withInput($request->all());
+            $existe=paciente::where('email_paciente',$nombre)->count();
+            
+            if ($existe==1) {
+                $usuario=paciente::where('email_paciente',$nombre)->where('estado_paciente',1)->first();                 
+
+                                
+                if ($usuario->identificacion_paciente==$contraseña) {
+
+                    Session::put('paciente_id', $usuario->id);                
+                    return "Hola Mundo";
+    
+                    if (Session::get('url')) {
+                           
+                        return redirect(Session::get('url'));
+                    } else {
+                       
+                        return "Hola Mundo";
+                    }
+                    
+                    
+                }
+                else {
+                    
+                    return redirect()->back()->withErrors(['password' => "Contraseña incorrecta."])->withInput($request->all());
+                }
+            }
+            
         }
+
+        return redirect()->back()->withErrors(['usuario' => "El usuario es incorrecto."])->withInput($request->all());
             
     }
 

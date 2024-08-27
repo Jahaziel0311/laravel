@@ -28,4 +28,16 @@ class orden_laboratorioController extends Controller
 
         return $valor;
     }
+
+    public function consultarRegistro($registro){
+        $valor= array();
+        $existe = medico::where('numero_registro',$registro)->count();
+        if($existe ==1){
+            $medico = medico::where('numero_registro',$registro)->first();
+            $valor= array("registro"=>$registro,"nombre"=>$medico->nombre_medico); 
+            
+        }
+
+        return $valor;
+    }
 }

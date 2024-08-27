@@ -1,12 +1,12 @@
-@extends('plantillas.plantilla')
+@extends('layout.app')
 
-@section('titulo')
-    Crear Paciente
+@section('head')
+      @include('layout.tableHead')
 @endsection
 
-@section('css')
-    <link rel="stylesheet" href="{{ asset('style.css')}}">
-
+@section('js')
+    @include('layout.tableJs')
+    @include('scripts.validaciones')
     <script>
        
         var app_url ='{{env('APP_URL')}}'; 
@@ -39,129 +39,124 @@
         }
         
     </script>
+
 @endsection
 
-@section('logopantalla')
-    <i class="fas fa-user"></i> 
-@endsection
-
-@section('titulopantalla')
-    Paciente
+@section('titulo')
+    Crear Paciente
 @endsection
 
 @section('contenido')
-    <div class="text-center">
-        <h1>Crear Paciente</h1>
+<div class="row">
+    <div class="col-md-2">
+
     </div>
-
-    <!--muestro el error-->
-    @error('status')
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        <strong>{{ $message }}</strong>
-    </div>
-    <script>
-        $(".alert").alert();
-
-    </script>
-    @enderror
-    <!-- fin del error-->
-
-    <div id="cardcrear" class="card col-lg-8">
-
-      <div class="card-body">
-              <form action="" method="POST" role="form" autocomplete="off">
-                @csrf
-                <br>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="inputcedula">Cédula</label>
-                        <input type="text" class="form-control"  name="txtCedula" id="txtCedula" placeholder="Ejemplo:8-888-8888"  onfocusout="validar()"
-                            value="{{old ('txtcedula')}}" required>
-                            <small id="AlertaCedula" class="form-text text-muted"></small>
-                    </div>
-                    <div class="form-group col-md-6">
-                      <label for="inputsexo">Sexo</label>
-                      <div class="form-check col-md-6">
-                          <input type="radio" class="form-check-input" name="txtsexo" id="radio1" value="m" <?php if(old('txtsexo')=="m"){echo 'checked="checked"';}?> checked>
-                          <label class="form-check-label" for="radio1">Masculino</label>
-                      </div>
-                      <div class="form-check col-md-6">
-                          <input type="radio" class="form-check-input" name="txtsexo" id="radio2" value="f" <?php if(old('txtsexo')=="f"){echo 'checked="checked"';}?>>
-                          <label class="form-check-label" for="radio2">Femenino</label>
-                        </div>
-                    </div> 
-                    
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="inputnombre">Nombre</label>
-                        <input type="text" class="form-control" id="inputnombre" placeholder="Ejemplo:Juan" name="txtnombre"
-                        value="{{old ('txtnombre')}}" required >
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputapellido">Apellido</label>
-                        <input type="text" class="form-control" id="inputapellido" placeholder="Ejemplo:Perez" name="txtapellido"
-                        value="{{old ('txtapellido')}}" required > 
-                    </div>
-
-                    
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        
-                        <label for="inputfecnac">Fecha de Nacimiento</label>
-                       
-                        <input type="date" class="form-control" id="inputfecnac" name="txtfecnac"
-                        value="{{old ('txtfecnac')}}" required>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputtelefono">Telefono</label>
-                        <input type="text" class="form-control" id="inputtelefono" placeholder="Ejemplo:66666666" name="txttelefono" date-format="dd-mm-yyyy"
-                        value="{{old ('txttelefono')}}">
-                    </div>
-                </div>
-               
-                <label for="">Correo</label>
-                <div class="input-group flex-nowrap">
-
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="addon-wrapping"><i class="fas fa-at"></i></span>
-                    </div>
-                    <input type="email" class="form-control" placeholder="Ejemplo:juan@gmail.com" aria-label="Username"
-                        aria-describedby="addon-wrapping" name="txtemail" value="{{old ('txtemail')}}">
-                </div>
-                <div class="form-group col-md-12">
-                    <label for="exampleFormControlTextarea1">Comentario</label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" name="txtComentario" rows="3">{{old ('txtComentario')}}</textarea>
-                </div>
-                <br>
-                <br>
-               
-                <div class="row justify-content-around"> 
-                    <div class="col-4"> 
-                        <button type="submit" id="botoncrear" class="btn btn-primary btn-lg"><i class="fas fa-check"></i> Agregar Paciente</button>
-                    </div>
-
-                    <div class="col-4">
-                        <a href="{{route('paciente.index')}}" class="btn btn-danger  btn-lg" id="botoncrear"><i class="fas fa-times"></i> Cancelar</a>
-                    </div>
-                
-                </div>
-                <br>
-                
-              </form>
+    <div class="col-md-8">
+        <div class="text-center">
+            <h1>Crear Paciente</h1>
         </div>
-    </div>
+      <div class="card">
+          <div class="card-body">
 
+            
+            <form action="{{route('paciente.insert')}}" method="POST" role="form" class="form-horizontal" autocomplete="off">
+                @csrf
+                <div class="mb-0">
+                    <div class="row">
+
+                        <div class="col-lg-6">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Cédula</span>
+                                <input type="text"  class="form-control" name="txtCedula" id="txtCedula" placeholder="Ejemplo:8-888-8888"  onfocusout="validar()"
+                                value="{{old ('txtcedula')}}" required>
+                                <div class="invalid-feedback" id="AlertaCedula"></div>
+                                
+                            </div>
+                        </div>
+                        <div class="col-lg-6">                                
+                            <div class="form-check col-md-6">
+                                <input type="radio" class="form-check-input" name="txtsexo" id="radio1" value="m" <?php if(old('txtsexo')=="m"){echo 'checked="checked"';}?> checked>
+                                <label class="form-check-label" for="radio1">Masculino</label>
+                            </div>
+                            <div class="form-check col-md-6">
+                                <input type="radio" class="form-check-input" name="txtsexo" id="radio2" value="f" <?php if(old('txtsexo')=="f"){echo 'checked="checked"';}?>>
+                                <label class="form-check-label" for="radio2">Femenino</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Nombre</span>
+                                <input type="text"  class="form-control" id="inputnombre" placeholder="Ejemplo:Juan" name="txtnombre"
+                                value="{{old ('txtnombre')}}" required>     
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Apellido</span>
+                                <input type="text"  class="form-control" id="inputapellido" placeholder="Ejemplo:Perez" name="txtapellido"
+                                value="{{old ('txtapellido')}}" required >  
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Fecha de Nacimiento</span>
+                                
+                                <input class="form-control" type="date"  id="inputfecnac" name="txtfecnac" date-format="dd-mm-yyyy"
+                                value="{{old ('txtfecnac')}}" required>
+                                
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Telefono</span>
+                                <input type="text"  class="form-control" id="inputtelefono" placeholder="Ejemplo:66666666" name="txttelefono" 
+                                value="{{old ('txttelefono')}}" >  
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Correo</span>
+                                <input type="email"  class="form-control" placeholder="Ejemplo:juan@gmail.com" 
+                                 name="txtemail" value="{{old ('txtemail')}}" >  
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="mb-3">
+                                <textarea class="form-control" id="exampleFormControlTextarea1"
+                                    placeholder="Comentario" name="txtComentario" rows="2">{{old ('txtComentario')}}</textarea>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            
+                        </div>
+                        <div class="col-lg-3">
+                            <a href="{{route('paciente.busqueda')}}" class="btn btn-danger  w-lg"><i class="fas fa-times"></i> Cancelar</a>
+                        </div>
+                        <div class="col-lg-3">
+                            
+                            <button type="submit" id="botoncrear" class="btn btn-info w-lg">Agregar Paciente</button>
+                            
+                        </div>
+                    </div>
+            
+                   
+                    
+                    
+                </div>                   
+                
+                
+                
+            </form>
+              
+              
+          </div>
+      </div>
+  </div>
+  <!-- end col -->
+</div>
+<!-- end row -->
 @endsection
-@section('footer')
-    @include('plantillas.footer')
-@section('contenidofooter')
-
-@show
 
 
-@endsection
+
+

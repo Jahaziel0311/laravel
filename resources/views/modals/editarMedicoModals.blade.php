@@ -1,80 +1,70 @@
-<div id="editarMedicoModal{{$fila->id}}"   class="modal fade" tabindex="-1">
-
+<div class="modal fade editarMedicoModal{{$fila->id}}" tabindex="-1" role="dialog"
+                      aria-labelledby="mySmallModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-
         <div class="modal-content">
-
-            <div class="modal-header bg-valmar">
-
-                <h5 class="modal-title"><span class="font-weight-bold text-white">Editar Médico</span></h5>
-
-                <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
-
+            <div class="modal-header">
+                <h5 class="modal-title align-self-center"
+                    id="exampleModalLabel">Editar Médico</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
             </div>
-
-            <div class="modal-body text-left" >
-                <form action="{{route('medico.save')}}" method="POST" role="form" autocomplete="off">
+            <div class="modal-body">
+                <form action="{{route('medico.save')}}" method="POST" role="form" class="form-horizontal" autocomplete="off">
                     @csrf
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="inputEmail4">Nombre del Doctor</label>
-                            <input type="text" class="form-control" id="inputEmail4" placeholder="Ejemplo:Juan" name="txtNombre"
-                                value="{{$fila->nombre_medico}}" required>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="inputPassword4">Numero de Registro</label>
-                            <input type="text" class="form-control" id="txtRegistro4" placeholder="Ejemplo:1538540" 
-                                 value="{{$fila->numero_registro}}" name="txtNumero" required>                            
-                        </div>
-                    </div>
-                    <label for="">Correo</label>
-                    <div class="input-group flex-nowrap">
-    
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="addon-wrapping"><i class="fas fa-at"></i></span>
-                        </div>
-                        <input type="email" class="form-control" placeholder="Ejemplo:juan@gmail.com" aria-label="Username"
-                            value="{{$fila->email_medico}}" aria-describedby="addon-wrapping" name="txtEmail">
-                    </div>
-                    <br>
-                    <label for="">Telefono</label>
-                    <div class="input-group flex-nowrap">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="addon-wrapping"><i class="fas fa-phone-alt"></i></span>
-                        </div>
-                        <input type="text" class="form-control" placeholder="Ejemplo:64987858" aria-describedby="addon-wrapping"
-                            value="{{$fila->telefono_medico}}" name="txtTelefono">
-                    </div>
-                    <br>
-                    <br>
-                    
-                    
-                    <input type="hidden" name="esModal" id="esModal" class="form-control form-control-sm" value="2">
+                    <div class="mb-0">
+                        <div class="row">
 
-                   
-                    <input type="hidden" name="txtId" id="txtId" class="form-control form-control-sm" value="{{$fila->id}}">
-                    
+                            <div class="col-lg-6">                                
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">Registro del Médico</span>
+                                    <input type="text"  class="form-control" name="txtNumero" id="txtRegistro2" placeholder="Ingrese el numero de registro del Medico"
+                                    value="{{$fila->numero_registro}}" required>                                    
+                                    
+                                </div>
+                            </div>  
 
-                    <div class="row justify-content-around"> 
-                        <div class="col-8">
-
+                            <div class="col-lg-6">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">Nombre del Doctor</span>
+                                    <input type="text"  class="form-control" name="txtNombre" placeholder="Ejemplo:Juan" 
+                                    value="{{$fila->nombre_medico}}" required> 
+                                </div>
+                            </div>
+                            
+                            <div class="col-lg-6">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">Correo</span>
+                                    <input type="email"  class="form-control" placeholder="Ejemplo:juan@gmail.com" 
+                                     name="txtEmail" value="{{$fila->email_medico}}" >  
+                                </div>
+                            </div>   
+                            <div class="col-lg-6">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">Telefono</span>
+                                    <input type="text"  class="form-control" id="inputtelefono" placeholder="Ejemplo:66666666" name="txtTelefono" 
+                                    value="{{$fila->telefono_medico}}" >  
+                                </div>
+                            </div>                                                 
+                            
+                            <div class="col-lg-8">
+                                
+                            </div>
+                            <div class="col-lg-4">
+                                <input type="hidden" name="esModal" id="esModal" class="form-control form-control-sm" value="2">                   
+                                <input type="hidden" name="txtId" id="txtId" class="form-control form-control-sm" value="{{$fila->id}}">
+                                <button type="submit" id="btnCrearModal" class="btn btn-info w-lg">Guardar Médico</button>
+                            </div>
                         </div>
-                        <div class="col-4"> 
-                            <button type="submit" id="btnEditMedicoModal" class="btn btn-info btn-lg"> Guardar</button>
-                        </div>    
-                        
+                
                     
                     </div>
                     
-    
                 </form>
-
-               
-
             </div>
-
         </div>
-
+        <!-- /.modal-content -->
     </div>
-
+    <!-- /.modal-dialog -->
 </div>
+
+

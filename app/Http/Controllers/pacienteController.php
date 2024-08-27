@@ -19,7 +19,7 @@ class pacienteController extends Controller
 
             $current = url()->current();
             Session::put('url', $current);    
-            return redirect(route('login'));
+            return redirect(route('login.index'));
         }
 
         if(Auth::user()->accesoRuta('/paciente')){
@@ -30,9 +30,12 @@ class pacienteController extends Controller
             } else {
                 $resultado=paciente::where('estado_paciente',1)->get();
             }
+
+            return view ("paciente.index", ["resultado"=>$resultado]);
             
         }
-        return view ("paciente.index", ["resultado"=>$resultado]);
+
+        return redirect(route('index'));
 
     } 
 
@@ -41,7 +44,7 @@ class pacienteController extends Controller
 
             $current = url()->current();
             Session::put('url', $current);    
-            return redirect(route('login'));
+            return redirect(route('login.index'));
         }
 
         if(Auth::user()->accesoRuta('/paciente')){//solo modificar la ruta buscar las rutas en web.php o el la tabla pantallas
@@ -50,10 +53,8 @@ class pacienteController extends Controller
             return view ("paciente.buscar");
 
         }
-        
             
-        return redirect(route('index'));
-        
+        return redirect(route('index'));       
         
     }
 
@@ -62,7 +63,7 @@ class pacienteController extends Controller
 
             $current = url()->current();
             Session::put('url', $current);    
-            return redirect(route('login'));
+            return redirect(route('login.index'));
         }
 
         if(Auth::user()->accesoRuta('/paciente')){//solo modificar la ruta buscar las rutas en web.php o el la tabla pantallas
@@ -72,11 +73,9 @@ class pacienteController extends Controller
             return redirect(route('paciente.buscado', ['buscar' => $request->txtBuscar]));                
             
 
-        }
-        
+        }        
             
-        return redirect(route('index'));
-            
+        return redirect(route('index'));           
        
         
     }
@@ -86,7 +85,7 @@ class pacienteController extends Controller
 
             $current = url()->current();
             Session::put('url', $current);    
-            return redirect(route('login'));
+            return redirect(route('login.index'));
         }
 
         if(Auth::user()->accesoRuta('/paciente')){//solo modificar la ruta buscar las rutas en web.php o el la tabla pantallas
@@ -122,7 +121,7 @@ class pacienteController extends Controller
 
             $current = url()->current();
             Session::put('url', $current);    
-            return redirect(route('login'));
+            return redirect(route('login.index'));
         }
 
         if(Auth::user()->accesoRuta('/paciente')){
@@ -133,16 +132,13 @@ class pacienteController extends Controller
             } else {
                 $resultado=paciente::where('created_at', '>=', Carbon::now()->subDays(30))->orderBy('id','Desc')->where('estado_paciente',1)->get();
             }
-            
+
+            return view ("paciente.index", ["resultado"=>$resultado]);
         }
-        return view ("paciente.index", ["resultado"=>$resultado]);
-       
         
+       
+        return redirect(route('index'));
     }
-
-
-
-
 
     public function buscar($cedula){
         if (Session::has('usuario_rol_id')) {
@@ -180,22 +176,22 @@ class pacienteController extends Controller
     }
 
     public function create(){
-        if (Session::has('usuario_rol_id')) {
-            $pantallas_menu = Controller::urlsPantallasXUsuario();
-            
-            if (in_array('/paciente/create',$pantallas_menu)){//solo modificar la ruta buscar las rutas en web.php o el la tabla pantallas
-                //esto ya estaba 
-                return view("paciente.create");
+        if (!Auth::user()) {
 
-            }
-            
-              
-            return redirect(route('index'));
-            
-        }else{
+            $current = url()->current();
+            Session::put('url', $current);    
             return redirect(route('login.index'));
         }
+
+        if(Auth::user()->accesoRuta('/paciente/create')){//solo modificar la ruta buscar las rutas en web.php o el la tabla pantallas
+                //esto ya estaba 
+            return view("paciente.create");
+
+        }
         
+            
+        return redirect(route('index'));        
+       
     }
 
     public function insert(Request $request){
@@ -203,7 +199,7 @@ class pacienteController extends Controller
 
             $current = url()->current();
             Session::put('url', $current);    
-            return redirect(route('login'));
+            return redirect(route('login.index'));
         }
 
 
@@ -224,45 +220,13 @@ class pacienteController extends Controller
                 $obj_paciente->comentario_paciente = nl2br($request->txtComentario);
                 $obj_paciente->save();
 
-               /*  if ($obj_paciente->email_paciente!='') {
-
-                    $password = Controller::generaPassword(10);                        
-                    $obj_usuario =new usuario();
-                    $obj_usuario->nombre_usuario = $obj_paciente->identificacion_paciente;
-                    $obj_usuario->email_usuario = $obj_paciente->email_paciente;
-                    $obj_usuario->password_usuario =  md5($password);
-                    $rol = rol::where('nombre_rol','Paciente')->first();
-                    $obj_usuario->rol_id = $rol->id;
-                    $obj_usuario->save();
-
-                    //Enviar notificacionea a usuarios
-                    $notificacion['identificacion_paciente'] = $obj_paciente->identificacion_paciente;
-                    $notificacion['mensaje'] = 'El paciente '.$obj_paciente->nombre_paciente." ".$obj_paciente->apellido_paciente.' se le creo una cuenta en webvalmar.com';
-                    $notificacion['password'] = $password;
-                    
-                    $roles = rol::where('nombre_rol','like','Recep%')->get();
-                    
-                    $lista_roles = array();
-                    foreach($roles as $rol){
-                        array_push($lista_roles,$rol->id);
-                    }
-                    
-                    usuario::whereIn('rol_id',$lista_roles)                            
-                            ->each(function(usuario $usuario) use ($notificacion){
-                                $usuario->notify(new nuevoUsuario($notificacion));
-                            });
-
-                    
-
-
-                } */
 
                 if($request->esModal){
                     if($request->esModal==2){
                         return redirect()->back()->with(['txtCedula'=>$request->txtCedula,'txtRegistro'=>$request->txtRegistro]);
                     }
                 }
-                return redirect(route('paciente.index'))->withErrors(['status' => "Se Agregó el Nuevo Paciente " .$obj_paciente->id ]); 
+                return redirect()->back()->withErrors(['status' => "Se Agregó el Nuevo Paciente " .$obj_paciente->identificacion_paciente]); 
             }
 
         }
@@ -274,25 +238,6 @@ class pacienteController extends Controller
         
     }
 
-    public function update($id){
-        if (Session::has('usuario_rol_id')) {
-            $pantallas_menu = Controller::urlsPantallasXUsuario();
-            
-            if (in_array('/paciente/update',$pantallas_menu)){//solo modificar la ruta buscar las rutas en web.php o el la tabla pantallas
-                //esto ya estaba 
-                $resultado = paciente::get()->where('id',$id);
-                return view ("paciente.update",  ["resultado"=>$resultado]);
-
-            }
-            
-              
-            return redirect(route('index'));
-            
-        }else{
-            return redirect(route('login.index'));
-        }
-        
-    }
 
     public function save(Request $request){
         
@@ -301,7 +246,7 @@ class pacienteController extends Controller
 
             $current = url()->current();
             Session::put('url', $current);    
-            return redirect(route('login'));
+            return redirect(route('login.index'));
         }
 
 
@@ -363,7 +308,7 @@ class pacienteController extends Controller
 
             $current = url()->current();
             Session::put('url', $current);    
-            return redirect(route('login'));
+            return redirect(route('login.index'));
         }
 
 
@@ -371,7 +316,7 @@ class pacienteController extends Controller
             $resultado = paciente::find($id);
             $resultado->estado_paciente = 0;
             $resultado->save();
-            return redirect (route('paciente.index'))->withErrors(['status' => "Se Eliminó el Paciente Correctamente!" ]);
+            return redirect()->back()->withErrors(['danger' => "Se Eliminó el Paciente Correctamente!" ]);
         }
         
               
@@ -385,7 +330,7 @@ class pacienteController extends Controller
 
             $current = url()->current();
             Session::put('url', $current);    
-            return redirect(route('login'));
+            return redirect(route('login.index'));
         }
 
 
@@ -393,36 +338,13 @@ class pacienteController extends Controller
             $resultado = paciente::find($id);
             $resultado->estado_paciente = 1;
             $resultado->save();
-            return redirect (route('paciente.index'))->withErrors(['status' => "Se Eliminó el Paciente Correctamente!" ]);
+            return redirect()->back()->withErrors(['status' => "Se desbloqueo el Paciente Correctamente!" ]);
         }
         
             
         return redirect(route('index'));
             
         
-    }
-    
-    public function verPassword($id){
-        $notificaciones = notificacion::where('notifiable_type','App\Models\usuario')->where('notifiable_id',Session::get('usuario_log_id'))->get();
-        
-        foreach ($notificaciones as $notificacion) {
-            $data = json_decode($notificacion->data, true);
-            if ($data['identificacion_paciente']==$id) {
-                
-                $notificacion->delete();
-                
-                $paciente = paciente::where('identificacion_paciente',$id)->first();
-                
-                return view('paciente.verPassword',['paciente'=>$paciente,'password'=>$data['password']]);
-            }
-            
-        }
-        
-     
-       
-    }
-
-
-    
+    }   
 
 }

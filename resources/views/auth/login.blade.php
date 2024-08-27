@@ -47,8 +47,9 @@
 
                                         <input type="text" class="form-control" name="usuario" id="username" value="{{ old('usuario')}}"
                                             placeholder="Ingrese el Usuario" required>
-                                            @error('usuario') <p class="text-danger text-xs pt-1"> {{$message}} </p>@enderror
+                                            
                                     </div>
+                                    @error('usuario') <p class="text-danger text-xs pt-1"> {{$message}} </p>@enderror
                                 </div>
 
                                 <div class="mb-3">
@@ -58,8 +59,9 @@
                                                 class="fa fa-key"></i></span>
                                         <input type="password" class="form-control" id="userpassword"
                                             placeholder="Ingrese la Contraseña" name="password">
-                                            @error('password') <p class="text-danger text-xs pt-1"> {{$message}} </p>@enderror
+                                            
                                     </div>
+                                    @error('password') <p class="text-danger text-xs pt-1"> {{$message}} </p>@enderror
                                 </div>
 
                                

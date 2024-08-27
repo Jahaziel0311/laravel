@@ -51,7 +51,7 @@
                                 <div class="input-group mb-3">
                                     <span class="input-group-text">Fecha de Nacimiento</span>
                                     
-                                    <input class="form-control" type="date"  id="inputfecnac" name="txtfecnac"
+                                    <input class="form-control" type="date"  id="inputfecnac" name="txtfecnac" date-format="dd-mm-yyyy"
                                     value="{{old ('txtfecnac')}}" required>
                                     
                                 </div>

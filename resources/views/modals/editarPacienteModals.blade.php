@@ -52,8 +52,8 @@
                                 <div class="input-group mb-3">
                                     <span class="input-group-text">Fecha de Nacimiento</span>
                                     
-                                    <input class="form-control" type="date"  id="inputfecnac" name="txtfecnac"
-                                    value="{{$fila->fecha_nacimiento_paciente}}" required>
+                                    <input class="form-control" type="date"  id="inputfecnac" name="txtfecnac" date-format="dd-mm-yyyy"
+                                    value="{{$fila->fecha_nacimiento_paciente}}" required format>
                                     
                                 </div>
                             </div>

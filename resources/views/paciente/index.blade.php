@@ -20,10 +20,16 @@
           <div class="card-body">
 
             <div class="row">
-                <div class="col-md-9">
+                <div class="col-md-4">
                   <h5 class="card-title">Pacientes</h5>
                   <p class="card-title-desc">Este listado muestra todos los pacientes que estan registrados en el sistema.
                   </p>
+                </div>
+                <div class="col-md-3">
+                  @include('mensajes.alertas')
+                </div>
+                <div class="col-md-2">
+
                 </div>
                 <div class="col-md-3">
                   <div class="row">
