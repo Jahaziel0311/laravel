@@ -167,4 +167,23 @@ class medicoController extends Controller
         return redirect(route('index'));
 
     }
+
+    public function create(){
+
+        if (!Auth::user()) {
+
+            $current = url()->current();
+            Session::put('url', $current);    
+            return redirect(route('login.index'));
+        }
+
+        if(Auth::user()->accesoRuta('/medico/create')){
+
+            return view("medico.create"); 
+
+        }
+
+        return redirect(route('index'));
+
+    }
 }

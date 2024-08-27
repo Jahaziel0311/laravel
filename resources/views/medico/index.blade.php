@@ -20,7 +20,7 @@
           <div class="card-body">
 
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-6">
                   <h5 class="card-title">Medicos</h5>
                   <p class="card-title-desc">Este listado muestra todos los medicos que estan registrados en el sistema.
                   </p>
@@ -28,9 +28,7 @@
                 <div class="col-md-3">
                   @include('mensajes.alertas')
                 </div>
-                <div class="col-md-2">
-
-                </div>
+                
                 <div class="col-md-3">
                   <div class="row">
                     <div class="col-md-8">

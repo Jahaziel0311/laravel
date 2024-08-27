@@ -57,29 +57,49 @@ class loginController extends Controller
            
             $existe=paciente::where('email_paciente',$nombre)->count();
             
-            if ($existe==1) {
-                $usuario=paciente::where('email_paciente',$nombre)->where('estado_paciente',1)->first();                 
+            if ($existe>0) {
 
+                
+                $usuarios=paciente::where('email_paciente',$nombre)->get();  
+                
+                $activo=true;                
+                
+                foreach ($usuarios as $usuario) {
+
+                    
+                    if ($usuario->identificacion_paciente==$contraseña) {
+
+                        
+
+                        if ($usuario->estado_paciente == 1) {
+
+                            Session::put('paciente_id', $usuario->id);                
+                            return Session::get('paciente_id');
+            
+                            if (Session::get('url')) {
                                 
-                if ($usuario->identificacion_paciente==$contraseña) {
+                                return redirect(Session::get('url'));
+                            } else {
+                            
+                                return "Hola Mundo";
+                            }
+                            
+                        } else {
 
-                    Session::put('paciente_id', $usuario->id);                
-                    return "Hola Mundo";
-    
-                    if (Session::get('url')) {
-                           
-                        return redirect(Session::get('url'));
-                    } else {
-                       
-                        return "Hola Mundo";
+                            $activo = false;
+                        }                         
                     }
-                    
-                    
+                        
                 }
-                else {
-                    
+                              
+                
+                if($activo){
                     return redirect()->back()->withErrors(['password' => "Contraseña incorrecta."])->withInput($request->all());
                 }
+                
+                return redirect()->back()->withErrors(['password' => "Tu usuario no esta activo"])->withInput($request->all());
+                
+                
             }
             
         }

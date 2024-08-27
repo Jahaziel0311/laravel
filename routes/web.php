@@ -21,7 +21,7 @@ use App\Http\Controllers\Controller;
 
  use App\Http\Controllers\medicoController;
  use App\Http\Controllers\pacienteController;
- use App\Http\Controllers\rolusuarioController;
+ use App\Http\Controllers\rolController;
 
  use App\Http\Controllers\loginController;
  use App\Http\Controllers\usuarioController;
@@ -59,13 +59,13 @@ use App\Http\Controllers\Controller;
  Route::get("/tipoexamen/delete/{id}", [tipoexamenController::class, 'delete'])->name("tipoexamen.delete");
  Route::get("/tipoexamen/desbloquear/{id}", [tipoexamenController::class, 'desbloquear'])->name("tipoexamen.desbloquear");
  
- Route::get("/rol", [rolusuarioController::class, 'index'])->name("rol.index");
- Route::get("/rol/create", [rolusuarioController::class, 'create'])->name("rol.create");
- Route::post("/rol/create", [rolusuarioController::class, 'insert'])->name("rol.insert");
- Route::get("/rol/update/{id}", [rolusuarioController::class, 'update'])->name("rol.update");
- Route::get("/rol/delete/{id}", [rolusuarioController::class, 'delete'])->name("rol.delete");
- Route::get("/rol/desbloquear/{id}", [rolusuarioController::class, 'desbloquear'])->name("rol.desbloquear");
- Route::post("/rol/update", [rolusuarioController::class, 'save'])->name("rol.save");
+ Route::get("/rol", [rolController::class, 'index'])->name("rol.index");
+ Route::get("/rol/create", [rolController::class, 'create'])->name("rol.create");
+ Route::post("/rol/create", [rolController::class, 'insert'])->name("rol.insert");
+ Route::get("/rol/update/{id}", [rolController::class, 'update'])->name("rol.update");
+ Route::get("/rol/delete/{id}", [rolController::class, 'delete'])->name("rol.delete");
+ Route::get("/rol/desbloquear/{id}", [rolController::class, 'desbloquear'])->name("rol.desbloquear");
+ Route::post("/rol/update", [rolController::class, 'save'])->name("rol.save");
  
  /*PACIENTE*/
  Route::get("/paciente", [pacienteController::class, 'index'])->name("paciente.index");
