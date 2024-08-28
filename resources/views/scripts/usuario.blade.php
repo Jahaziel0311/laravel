@@ -23,29 +23,6 @@
         });
       
     }
-    function validarEmail(){           
-      const url = app_url+'/email/jahazieldesalas@hotmail.com';
-      fetch(url)
-        .then(respuesta => respuesta.json() )
-        .then(respuesta => {let email=respuesta.email ;
-            if (email =="jahazieldesalas@hotmail.com"){
-                document.getElementById('AlertaEmail').innerHTML ='Este correo ya existe';                    
-                document.getElementById("txtEmail").className = "form-control is-invalid";                    
-                document.getElementById("botoncrear").disabled = true;
-                
-                
-            }
-            else{
-                document.getElementById('AlertaEmail').innerHTML ='';                    
-                document.getElementById("txtEmail").className = "form-control is-valid";                    
-                document.getElementById("botoncrear").disabled = false;
-                    
-                
-            }
-           
-        });
-      
-    }
 
     
    
