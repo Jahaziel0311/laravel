@@ -103,7 +103,7 @@
                         
                         
                         <div class="col-lg-4 offset-8">
-                            @if ($rol != )
+                            @if ($rol != '' )
                                 <input type="hidden" name="txtid" id="inputtxtid" class="form-control" value="{{$rol->id}}">
                             @endif
                             
