@@ -103,7 +103,10 @@
                         
                         
                         <div class="col-lg-4 offset-8">
-                            <input type="hidden" name="txtid" id="inputtxtid" class="form-control" value="{{$rol->id}}">
+                            @if ($rol != )
+                                <input type="hidden" name="txtid" id="inputtxtid" class="form-control" value="{{$rol->id}}">
+                            @endif
+                            
                             <button type="submit" id="btnCrearModal" class="btn btn-info w-lg">Guardar</button>
                         </div>
                     </div>
