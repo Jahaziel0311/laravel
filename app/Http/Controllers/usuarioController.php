@@ -39,23 +39,22 @@ class usuarioController extends Controller
 
     public function create(){
 
-        if (Session::has('usuario_rol_id')) {
-            $pantallas_menu = Controller::urlsPantallasXUsuario();
-           
-            if (in_array('/usuario/create',$pantallas_menu)){
-                $roles = rol::get();
-                return view("usuario.create",["roles"=>$roles]);
+        if (!Auth::user()) {
 
-            }
-             
-            return redirect(route('index'));
-            
-        }else{
+            $current = url()->current();
+            Session::put('url', $current);    
             return redirect(route('login.index'));
         }
 
+        if(Auth::user()->accesoRuta('/usuario/create')){
 
-        
+            $roles = rol::where('estado_rol',1)->get();
+            return view("usuario.create",["roles"=>$roles]);
+
+        }
+            
+        return redirect(route('index'));            
+       
     }
 
     public function insert(Request $request){
@@ -66,7 +65,7 @@ class usuarioController extends Controller
             Session::put('url', $current);    
             return redirect(route('login.index'));
         }
-
+        
         if(Auth::user()->accesoRuta('/usuario/create')){
                 
             if ($request->txtContraseña!=$request->txtContraseña_confirmation) {
@@ -239,7 +238,7 @@ class usuarioController extends Controller
     }
 
     public function delete($id){
-        
+
         if (!Auth::user()) {
 
             $current = url()->current();
