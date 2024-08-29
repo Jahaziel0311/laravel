@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\pantalla;
 use App\Models\rol;
@@ -12,274 +12,201 @@ use Session;
 
 class roldepantallaController extends Controller
 {
+
     public function index(){
         
-        if (Session::has('usuario_rol_id')) {
-            $pantallas_menu = Controller::urlsPantallasXUsuario();
-           
-            if (in_array('/pantalla',$pantallas_menu)){//solo modificar la ruta buscar las rutas en web.php o el la tabla pantallas
-                //esto ya estaba
-                $resultado = pantalla::orderBy('padre')->orderBy('id')->get();
-                $permisos = Controller::permisos('pantalla');
-                $pantallas_padre = pantalla::where('padre',0)->get();
-                return view('pantallas.index',["resultado"=>$resultado,'permisos'=>$permisos,"pantallas_padre"=>$pantallas_padre]);
+        if (!Auth::user()) {
 
-            }
-            
-              
-            return redirect(route('index'));
-            
-        }else{
+            $current = url()->current();
+            Session::put('url', $current);    
             return redirect(route('login.index'));
         }
-        
-    
+
+        if(Auth::user()->accesoRuta('/pantalla')){
+
+            $resultado = pantalla::orderBy('padre')->orderBy('id')->get();            
+            $pantallas_padre = pantalla::where('padre',0)->get();
+            return view('pantalla.index',["resultado"=>$resultado,"pantallas_padre"=>$pantallas_padre]);
+
+        }
+            
+              
+        return redirect(route('index'));
+            
     }
+
     public function create(){
 
-        if (Session::has('usuario_rol_id')) {
-            $pantallas_menu = Controller::urlsPantallasXUsuario();
-            
-            if (in_array('/pantalla/create',$pantallas_menu)){//solo modificar la ruta buscar las rutas en web.php o el la tabla pantallas
-                //esto ya estaba
-                $pantallas_padre = pantalla::where('padre',0)->get();
-    
-                return view('pantallas.create',["pantallas_padre"=>$pantallas_padre]);
+        if (!Auth::user()) {
 
-            }
-            
-              
-            return redirect(route('index'));
-            
-        }else{
+            $current = url()->current();
+            Session::put('url', $current);    
             return redirect(route('login.index'));
         }
+
+        if(Auth::user()->accesoRuta('/pantalla/create')){
+
+            $pantallas_padre = pantalla::where('padre',0)->get();
+
+            return view('pantalla.create',["pantallas_padre"=>$pantallas_padre]);
+
+        }
         
+            
+        return redirect(route('index'));            
     
     }   
 
    
 
     public function insert(Request $request){
-        if (Session::has('usuario_rol_id')) {
-            $pantallas_menu = Controller::urlsPantallasXUsuario();
-            
-            if (in_array('/pantalla/create',$pantallas_menu)){//solo modificar la ruta buscar las rutas en web.php o el la tabla pantallas
-                //esto ya estaba
-                if($request->txtEstado == 1){
-                    $estado =1;
-                }else{
-                    $estado=0;
-                }
-                
-                $obj_pantalla = new pantalla();        
-                $obj_pantalla->nombre_pantalla=$request->txtNombre;
-                $obj_pantalla->titulo_pantalla = str_replace(' ', '', $request->txtNombre);        
-                $obj_pantalla->url_pantalla=$request->txtUrl;
-                $obj_pantalla->padre = $request->txtPadre;
-                $obj_pantalla->estado_pantalla = $estado;
-                $obj_pantalla->save();
-                return redirect(route('pantalla.index'))->withErrors(['status' => "Se ha creado la pantalla" ]);
-            }
-        
-              
-            return redirect(route('index'));
-            
-        }else{
+
+        if (!Auth::user()) {
+
+            $current = url()->current();
+            Session::put('url', $current);    
             return redirect(route('login.index'));
         }
-        
+
+        if(Auth::user()->accesoRuta('/pantalla/create')){
+
+            if($request->txtEstado == 1){
+                $estado =1;
+            }else{
+                $estado=0;
+            }
+            
+            $obj_pantalla = new pantalla();        
+            $obj_pantalla->nombre_pantalla=$request->txtNombre;
+            $obj_pantalla->titulo_pantalla = str_replace(' ', '', $request->txtNombre);        
+            $obj_pantalla->url_pantalla=$request->txtUrl;
+            $obj_pantalla->padre = $request->txtPadre;
+            $obj_pantalla->estado_pantalla = $estado;
+            $obj_pantalla->save();
+            return redirect(route('pantalla.index'))->withErrors(['status' => "Se ha creado la pantalla: " .$obj_pantalla->nombre_pantalla ]);
+        }
+    
+            
+        return redirect(route('index'));
+
     }
 
     
 
-    public function elimina($id){
-        if (Session::has('usuario_rol_id')) {
-            $pantallas_menu = Controller::urlsPantallasXUsuario();
-            
-            if (in_array('/pantalla/delete',$pantallas_menu)){//solo modificar la ruta buscar las rutas en web.php o el la tabla pantallas
-                $resultado = pantalla::find($id);         
-                $resultado->delete();
-                
-                return redirect(route('pantalla.index'))->withErrors(['status' => "Se ha eliminado la pantalla" ]);
-            }
-            
-              
-            return redirect(route('index'));
-            
-        }else{
+    public function delete($id){
+        
+        if (!Auth::user()) {
+
+            $current = url()->current();
+            Session::put('url', $current);    
             return redirect(route('login.index'));
         }
-       
-    }
 
-    public function update($id){
-        if (Session::has('usuario_rol_id')) {
-            $pantallas_menu = Controller::urlsPantallasXUsuario();
+        if(Auth::user()->accesoRuta('/pantalla/delete')){
+
+            $resultado = pantalla::find($id);         
+            $resultado->delete();
             
-            if (in_array('/pantalla/update',$pantallas_menu)){//solo modificar la ruta buscar las rutas en web.php o el la tabla pantallas
-                $res = pantalla::find($id);
-                $pantallas_padre = pantalla::where('padre',0)->get();
-                return view ('pantallas.modifica', ["pantalla"=>$res,"pantallas_padre"=>$pantallas_padre]);
-            }
-            
-              
-            return redirect(route('index'));
-            
-        }else{
-            return redirect(route('login.index'));
+            return redirect(route('pantalla.index'))->withErrors(['status' => "Se ha eliminado la pantalla" ]);
         }
         
+            
+        return redirect(route('index'));
+       
     }
 
     public function save(Request $request){
 
-        if (Session::has('usuario_rol_id')) {
-            $pantallas_menu = Controller::urlsPantallasXUsuario();
-            
-            if (in_array('/pantalla/update',$pantallas_menu)){//solo modificar la ruta buscar las rutas en web.php o el la tabla pantallas
-                if($request->txtEstado == 1){
-                    $estado =1;
-                }else{
-                    $estado=0;
-                }
-                
-                $obj_panta= pantalla::find($request->txtId);
-                $obj_panta->nombre_pantalla= $request->txtNombre;
-                $obj_panta->titulo_pantalla = str_replace(' ', '', $request->txtNombre);        
-                $obj_panta->url_pantalla= $request->txtUrl;
-                $obj_panta->estado_pantalla = $estado;
-                $obj_panta->padre = $request->txtPadre;
-                $obj_panta->save();
-        
-                return redirect(route('pantalla.index'))->withErrors(['status' => "Se ha actualizado la pantalla" ]);
-            }
-        
-              
-            return redirect(route('index'));
-            
-        }else{
+        if (!Auth::user()) {
+
+            $current = url()->current();
+            Session::put('url', $current);    
             return redirect(route('login.index'));
         }
-        
 
-    }
+        if(Auth::user()->accesoRuta('/pantalla/update')){
 
-    public function rolPantalla($id){
-
-        if (Session::has('usuario_rol_id')) {
-            $pantallas_menu = Controller::urlsPantallasXUsuario();
+            if($request->txtEstado == 1){
+                $estado =1;
+            }else{
+                $estado=0;
+            }
             
-            if (in_array('/roles/pantalla/0',$pantallas_menu)){//solo modificar la ruta buscar las rutas en web.php o el la tabla pantallas
-                $pantallas = pantalla::orderBy('padre')->orderBy('id')->get();
+            $obj_panta= pantalla::find($request->txtId);
+            $obj_panta->nombre_pantalla= $request->txtNombre;
+            $obj_panta->titulo_pantalla = str_replace(' ', '', $request->txtNombre);        
+            $obj_panta->url_pantalla= $request->txtUrl;
+            $obj_panta->estado_pantalla = $estado;
+            $obj_panta->padre = $request->txtPadre;
+            $obj_panta->save();
     
-                $pantallas_rol= rol_pantalla::get()->where('rol_id',$id);
-                $rol = rol::find($id);
-                $lista_pantallas= array();
-                foreach($pantallas_rol as $pantalla){
-                    array_push($lista_pantallas,$pantalla->pantalla_id);
-                }
-        
-                return view("rolpantalla.selectPantallaId",["pantallas"=>$pantallas,"rol"=>$rol,"lista_pantallas"=>$lista_pantallas]);
-            }
+            return redirect(route('pantalla.index'))->withErrors(['status' => "Se ha actualizado la pantalla" ]);
+        }        
             
-              
-            return redirect(route('index'));
-            
-        }else{
-            return redirect(route('login.index'));
-        }
-        
-        
+        return redirect(route('index'));
+
     }
+
 
     public function pantallaSave(Request $request){
-        if (Session::has('usuario_rol_id')) {
-            $pantallas_menu = Controller::urlsPantallasXUsuario();
-            
-            if (in_array('/roles/pantalla/0',$pantallas_menu)){//solo modificar la ruta buscar las rutas en web.php o el la tabla pantallas
-                DB::table('rol_pantalla')->where('rol_id', '=', $request->txtid)->delete();
-                if (empty($request->pantallas_id )) {
-                    
-                } else {
-                    foreach($request->pantallas_id as $pantalla_id){ 
+        if (!Auth::user()) {
 
-                        $obj_pantalla= new rol_pantalla();
-                        $obj_pantalla->rol_id= $request->txtid;
-                        $obj_pantalla->pantalla_id = $pantalla_id;
-                        $obj_pantalla->save();
-                        
-                    }  
-                }
-                
-                
-                return redirect (route('rol.index'))->withErrors(['status' => "El rol se modifico correctamente" ]);
-            }
-            
-              
-            return redirect(route('index'));
-            
-        }else{
+            $current = url()->current();
+            Session::put('url', $current);    
             return redirect(route('login.index'));
         }
 
         
+        if(Auth::user()->accesoRuta('/roles/pantalla/0')){            
+        
+            DB::table('rol_pantalla')->where('rol_id', '=', $request->txtid)->delete();
+            if (empty($request->pantallas_id )) {
+                
+            } else {
+                foreach($request->pantallas_id as $pantalla_id){ 
 
+                    $obj_pantalla= new rol_pantalla();
+                    $obj_pantalla->rol_id= $request->txtid;
+                    $obj_pantalla->pantalla_id = $pantalla_id;
+                    $obj_pantalla->save();
+                    
+                }  
+            }
+            
+            
+            return redirect()->back()->withErrors(['status' => "El rol se modifico correctamente" ]);
+        }
+        
+            
+        return redirect(route('index'));
     }
 
     public function rolesPantalla($id){
 
-        if (Session::has('usuario_rol_id')) {
-            $pantallas_menu = Controller::urlsPantallasXUsuario();
-            
-            if (in_array('/roles/pantalla/0',$pantallas_menu)){//solo modificar la ruta buscar las rutas en web.php o el la tabla pantallas
-                $pantallas = pantalla::get();
-                $pantallas_rol= rol_pantalla::get()->where('rol_id',$id);
-                $roles = rol::orderBy('id', 'ASC')->get();
-                $rol = rol::find($id);
-                $lista_pantallas= array();
-                foreach($pantallas_rol as $pantalla){
-                    array_push($lista_pantallas,$pantalla->pantalla_id);
-                }
-        
-                return view("rolpantalla.selectPantalla",["pantallas"=>$pantallas,"rol"=>$rol,"roles"=>$roles,"lista_pantallas"=>$lista_pantallas]);
-            }
-            
-              
-            return redirect(route('index'));
-            
-        }else{
+        if (!Auth::user()) {
+
+            $current = url()->current();
+            Session::put('url', $current);    
             return redirect(route('login.index'));
         }
 
-        
+        if(Auth::user()->accesoRuta('/roles/pantalla/0')){ 
 
-        
-    }
-
-    public function rolesPantallas(){
-        if (Session::has('usuario_rol_id')) {
-            $pantallas_menu = Controller::urlsPantallasXUsuario();
-            
-            if (in_array('/roles/pantallas',$pantallas_menu)){//solo modificar la ruta buscar las rutas en web.php o el la tabla pantallas
-                $resultado = rol::where('estado_rol',1)->get();
-                $pantallas = rol_pantalla::groupBy('rol_id')
-                                ->selectRaw('count(*) as total, rol_id')
-                                ->get();
-                
-        
-                return view('rolpantalla.index',['resultado'=>$resultado,"pantallas"=>$pantallas]);
-            }
-            
-              
-            return redirect(route('index'));
-            
-        }else{
-            return redirect(route('login.index'));
+            $pantallas = pantalla::where('padre',0)->get();
+            $pantallas_rol= rol_pantalla::get()->where('rol_id',$id);
+            $roles = rol::orderBy('id', 'ASC')->get();
+            $rol = rol::find($id);
+            $lista_pantallas= array();
+            foreach($pantallas_rol as $pantalla){
+                array_push($lista_pantallas,$pantalla->pantalla_id);
+            }     
+    
+            return view("rolpantalla.selectPantallaId",["pantallas"=>$pantallas,"rol"=>$rol,"roles"=>$roles,"lista_pantallas"=>$lista_pantallas]);
         }
-
-       
+        
+            
+        return redirect(route('index'));
+      
     }
-
     
 }

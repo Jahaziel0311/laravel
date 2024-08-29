@@ -1,11 +1,7 @@
 @extends('layout.app')
 
-@section('head')
-      @include('layout.tableHead')
-@endsection
-
 @section('js')
-    @include('layout.tableJs')
+  
     @include('scripts.validaciones')
 
 
@@ -39,12 +35,10 @@
                                 <input type="text"  class="form-control" placeholder="Ejemplo: Recepcionista" name="txtNombre" required>
                                                          
                             </div>
-                        </div>                                                                              
+                        </div>                                                                             
                         
-                        <div class="col-lg-8">
-                            
-                        </div>
-                        <div class="col-lg-4">
+                        
+                        <div class="col-lg-4 offset-8">
                             
                             <button type="submit" id="btnCrearModal" class="btn btn-info w-lg">Agregar Rol</button>
                         </div>

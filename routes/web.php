@@ -133,12 +133,13 @@ use App\Http\Controllers\Controller;
  Route::get("/ordenesLaboratorio/examen/eliminar/{id}", [resultadoController::class, 'eliminarExamen'])->name("ordenLaboratorio.examen.eliminar");
  Route::get("/ordenesLaboratorio/examen/terminado/{id}", [resultadoController::class, 'examenTerminado'])->name("ordenLaboratorio.examen.terminado");
  Route::Post("/ordenesLaboratorio/examen/subir", [resultadoController::class, 'subirArchivo'])->name("ordenLaboratorio.examen.subirResultado");
+
  //rutas pantalla y rol de pantalla
  Route::get("/pantalla", [roldepantallaController::class,'index'])->name("pantalla.index");
  Route::get("/pantalla/create", [roldepantallaController::class, 'create'])->name("pantalla.create");
  Route::post("/pantalla/create", [roldepantallaController::class, 'insert'])->name("pantalla.insert");
  Route::get("rol/pantalla/{id}", [roldepantallaController::class,'rolPantalla'])->name("rol.pantallas");
- Route::get("/pantalla/delete/{id}",[roldepantallaController::class,'elimina'])->name("pantalla.delete");
+ Route::get("/pantalla/delete/{id}",[roldepantallaController::class,'delete'])->name("pantalla.delete");
  Route::get("/pantalladmin/update/{id}",[roldepantallaController::class,'update'])->name("pantalla.update");
  Route::post("/pantalladmin/update",[roldepantallaController::class,'save'])->name("pantalla.save");
  Route::post("/rol/pantalla/save",[roldepantallaController::class,'pantallaSave'])->name("rolPantalla.save");

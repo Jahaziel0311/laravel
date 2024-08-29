@@ -30,6 +30,13 @@ class pantalla extends Model
 
         return pantalla::where('padre',$this->id)->whereIn('id',$lista)->get();
     }
+
+    public function sub_pantallas()
+    {  
+
+        return pantalla::where('padre',$this->id)->get();
+
+    }
     
 
 

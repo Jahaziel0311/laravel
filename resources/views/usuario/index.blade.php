@@ -27,7 +27,7 @@
                   </p>
                 </div>
                 <div class="col-md-3">
-                  @include('mensajes.alertas')
+                  
                 </div>
                 @if(Auth::user()->accesoRuta('/usuario/create'))
                   <div class="col-md-3">
